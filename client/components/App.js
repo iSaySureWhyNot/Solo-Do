@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 class App extends Component {
     render(){
         return (
-            <div>sup bitches</div>
+            <div></div>
         )
         
     }
 }
+
+export default App;
