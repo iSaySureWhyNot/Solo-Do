@@ -2,9 +2,7 @@ const path =  require ('path');
 
 module.exports = {
     mode: process.env.NODE_ENV,
-    entry: {
-        index: './client/index.js'
-    },
+    entry: ["regenerator-runtime/runtime.js", "./client/index.js"],
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'build')

@@ -11,7 +11,9 @@ class ListContainer extends React.Component {
     }
 
     componentDidMount(){
-        fetch('/api/tasks')
+        fetch('/api/tasks', {
+            method: 'GET'
+        })
             .then(res => res.json())
             .then((tasks) => {
                 if(!Array.isArray(tasks)) tasks = [];
@@ -37,15 +39,21 @@ class ListContainer extends React.Component {
             <div>Sorry, no tasks found</div>
           );
         } 
+        const parsedTasks =[]
         
-        //const taskElems = ()
+            
+        for(let i = 0; i < tasks.length; i++){
+            parsedTasks.push(<div key = {i}>{tasks[i]['content']}</div>)
+        }
+            
         
+        console.log('parsed Tasks', parsedTasks)
         return(
         <div>
             <TextBox/>
-            <ul>
-               <li>{tasks[0]['content']}</li> 
-            </ul>
+            
+               {parsedTasks} 
+            
             
         </div>
         )

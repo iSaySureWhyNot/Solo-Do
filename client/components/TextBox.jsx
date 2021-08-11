@@ -1,16 +1,25 @@
 import React from 'react';
 
 
-function getInput(e) {
+
+
+const getInput = async (e) => {
     if (e.key === 'Enter'){
-        const input = document.getElementById('textbox').value;
+        const input = await document.getElementById('textbox').value;
         console.log(input)
-        
+        await fetch('api/tasks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'Application/JSON'
+            },
+            body: JSON.stringify({text:input})
+        })
+        //.then((res) => console.log(res))
         document.getElementById('textbox').value = '';
     }
     
 }
-
+ 
 const TextBox = (props) => {
     return(
         <div>
