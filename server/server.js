@@ -13,12 +13,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
 // serve index.html on the route '/'
-app.get('/', apiRouter);
+app.use('/api', apiRouter);
 
 
-// app.get('/', (req, res) => {
-//     return res.status(200).sendFile(path.join(__dirname, '../index.html'));
-//   });
+app.get('/', (req, res) => {
+    return res.status(200).sendFile(path.join(__dirname, '../index.html'));
+  });
 
 
 app.listen(3000)

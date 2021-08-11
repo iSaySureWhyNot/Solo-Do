@@ -42,7 +42,7 @@ module.exports = {
         hot: true,
         publicPath: path.resolve(__dirname, '/build/'),
         proxy: {
-          '/api': 'http://localhost:3000'
+          '/': 'http://localhost:3000'
         }
       }  
 };
