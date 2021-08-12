@@ -14,10 +14,8 @@ class App extends Component {
     //console.log(res.locals.tasks);
     render(){
         return (
-            <div>Things to do
-                {/* <Route exact path = '/'
-                    component = {ListContainer}
-                /> */}
+            <div className ="appContain">
+                
                 <ListContainer />
             </div>
             

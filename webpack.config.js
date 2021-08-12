@@ -20,20 +20,11 @@ module.exports = {
                     }    
             }
           }, 
-          { 
+          {
             test: /\.s[ac]ss$/i,
-            
-            use: [
-              { loader: 'style-loader' },
-              {
-                loader: 'css-loader',
-                options: {
-                  modules: true
-                }
-              },
-              { loader: 'sass-loader' }
-            ]
-          }
+            exclude: path.resolve(__dirname, './node_modules/'),
+            use: ["style-loader", "css-loader", "sass-loader"],
+          },
         ]
       },
       devServer: {

@@ -22,7 +22,8 @@ const getInput = async (e) => {
  
 const TextBox = (props) => {
     return(
-        <div>
+        <div className='textboxContainer'>
+            <span>New Task: </span>
             <input 
                 type="text" 
                 id="textbox" 
@@ -30,7 +31,9 @@ const TextBox = (props) => {
                 onKeyDown = {getInput}
                 >
             </input>
+            
         </div>
+        
         
     )
 }

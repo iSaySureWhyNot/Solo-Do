@@ -3,18 +3,51 @@ import React from 'react';
 
 import TextBox from './TextBox.jsx';
 
-
+const getInput = async (e) => {
+    if (e.key === 'Enter'){
+        const input = await document.getElementById('textbox').value;
+        console.log(input)
+        await fetch('api/tasks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'Application/JSON'
+            },
+            body: JSON.stringify({text:input})
+        })
+       // .then((res) => this.setState({
+                        //tasks
+        //            }))
+        document.getElementById('textbox').value = '';
+    }
+    
+}
 
 class ListContainer extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            tasks : []
-        }
+        
 
         
 
         // this.deleteTask = this.deleteTask.bind(this)
+    }
+    getInput = async (e) => {
+        if (e.key === 'Enter'){
+            const input = await document.getElementById('textbox').value;
+            console.log(input)
+            await fetch('api/tasks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'Application/JSON'
+                },
+                body: JSON.stringify({text:input})
+            })
+           // .then((res) => this.setState({
+                            //tasks
+            //            }))
+            document.getElementById('textbox').value = '';
+        }
+        
     }
 
     async deleteTask(e) {
@@ -65,22 +98,23 @@ class ListContainer extends React.Component {
             .catch(err => console.log('ListContainer.componentDidMount: get tasks: ERROR: ', err));
     }
 
-    componentDidUpdate(prevProps, prevState) {
-    //     fetch('/api/tasks', {
-    //         method: 'GET'
-    //     })
-    //         .then(res => res.json())
-    //         .then((tasks) => {
-    //             if(!Array.isArray(tasks)) tasks = [];
-    //             return this.setState({
-    //                 tasks
-    //             })
-    //         })
-    //         .catch(err => console.log('ListContainer.componentDidMount: get tasks: ERROR: ', err));
+    componentDidUpdate(nextProps, nextState) {
+        // fetch('/api/tasks', {
+        //     method: 'GET'
+        // })
+        //     .then(res => res.json())
+        //     .then((tasks) => {
+        //         if(!Array.isArray(tasks)) tasks = [];
+        //         return this.setState({
+        //             tasks
+        //         })
+        //     })
+        //     .catch(err => console.log('ListContainer.componentDidMount: get tasks: ERROR: ', err));
     }
     
+    
     render(){
-
+        
         if (!this.state) return (
             <div>
               <h1>Loading data, please wait...</h1>
@@ -92,7 +126,22 @@ class ListContainer extends React.Component {
 
         if (!tasks.length) {
             return (
-            <div>Sorry, no tasks found</div>
+                <div>
+                    Do something you lazy fuck
+                    <div className='textboxContainer'>
+                    
+                    <span>New Task: </span>
+                    <input 
+                        type="text" 
+                        id="textbox" 
+                        name="fname" 
+                        onKeyDown = {getInput}
+                        >
+                    </input>
+                
+                    </div>
+                </div>
+                
           );
         } 
         const parsedTasks =[]
@@ -104,13 +153,21 @@ class ListContainer extends React.Component {
                 doneOrNot = true
             }
             parsedTasks.push(
-                <div key = {i+1}>{tasks[i]['content']}
-                    <button tag = {'button'+(i+1)} onClick = {this.deleteTask} value = {tasks[i]['taskid']}> {'Delete'}
-                    </button>
-                    <input type="checkBox" id={'checkBox'+(i+1)} value = {tasks[i]['taskid']} checked={tasks[i]['done']} onChange = {this.updateTask}>
+                <div className ='taskContainer' key= {'taskContainer'+i}>
+                    <div className = 'task' key = {i+1}>{tasks[i]['content']}</div>
+                        <div className = 'deleteBox' key= {'deleteBox'+i}>
+                            <button className ='delete' tag = {'button'+(i+1)} onClick = {this.deleteTask} value = {tasks[i]['taskid']}> {'Delete'}
+                            </button>
+                        </div>
+                        <div className = 'doneBox' key= {'doneBox'+i}>
+                            <input type="checkBox" id={'checkBox'+(i+1)} value = {tasks[i]['taskid']} checked={tasks[i]['done']} onChange = {this.updateTask}>
+                            
+                            </input><label htmlFor ={'checkBox'+(i+1)}>Done</label>
+                        </div>
                         
-                    </input><label htmlFor ={'checkBox'+(i+1)}>Done</label>
-                </div>)
+                    
+                </div>
+                )
         }
             
         
