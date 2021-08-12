@@ -22,4 +22,14 @@ router.post('/tasks',
     (req, res) => res.status(200).json(res.locals.tasks)
 );
 
+router.post('/tasks/delete',
+    taskController.deleteTask,
+    
+);
+
+router.post('/tasks/update',
+    taskController.updateTask,
+    (req, res) => res.status(200).json(res.locals.tasks)
+)
+
 module.exports = router;

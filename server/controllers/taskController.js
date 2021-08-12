@@ -6,7 +6,7 @@ taskController.getTasks = (req, res, next) => {
     db
         .query('SELECT * FROM tasks')
         .then(result => {
-            console.log(result.rows)
+            //console.log(result.rows)
             res.locals.tasks = result.rows
             next()
         })
@@ -14,12 +14,30 @@ taskController.getTasks = (req, res, next) => {
 }
 
 taskController.postTasks = (req, res, next) => {
-    console.log('req body', req.body)
+    //console.log('req body', req.body)
     const q = "insert into tasks (content, done) values ('"+`${req.body.text}`+"', false)"
     db
         .query(q)
         .then(next())
         .catch(err => console.error('Error executing post query', err.stack))
+}
+
+taskController.deleteTask = (req, res, next) => {
+    console.log(req.body)
+    q = "delete from tasks where taskid="+`${req.body.key}`
+    db
+        .query(q)
+        .then(next())
+        .catch(err => console.error('Error executing delete query', err.stack))
+}
+
+taskController.updateTask = (req, res, next) => {
+    console.log(req.body)
+    q = "update tasks set done ="+`${req.body.done}`+" where taskid="+`${req.body.key}`
+    db
+        .query(q)
+        .then(next())
+        .catch(err => console.error('Error executing update done query', err.stack))
 }
 
 module.exports = taskController;

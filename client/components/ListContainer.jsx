@@ -8,6 +8,47 @@ import TextBox from './TextBox.jsx';
 class ListContainer extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            tasks : []
+        }
+
+        
+
+        // this.deleteTask = this.deleteTask.bind(this)
+    }
+
+    async deleteTask(e) {
+        
+        await fetch('api/tasks/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'Application/JSON'
+            },
+            body: JSON.stringify({key: e.target.value})
+        })
+        .catch(err => console.log('ListContainer.deleteTask: delete tasks: ERROR: ', err));
+        //console.log(e.target.value)
+    }
+
+    async updateTask(e) {
+        console.log(e.target.checked)
+        // if(e.target.checked) {
+        //     document.getElementById(e.target.id).checked = await true
+        // } else {
+        //     document.getElementById(e.target.id).checked = await false
+        // }
+        //document.getElementById(e.target.id).checked = await true
+        fetch('api/tasks/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'Application/JSON'
+            },
+            body: JSON.stringify({done: e.target.checked,
+                key: e.target.value
+            })
+        })
+        .catch(err => console.log('ListContainer.deleteTask: delete tasks: ERROR: ', err));
+        console.log(e.target)
     }
 
     componentDidMount(){
@@ -24,34 +65,21 @@ class ListContainer extends React.Component {
             .catch(err => console.log('ListContainer.componentDidMount: get tasks: ERROR: ', err));
     }
 
-    componentDidUpdate() {
-        // fetch('/api/tasks', {
-        //     method: 'GET'
-        // })
-        //     .then(res => res.json())
-        //     .then((tasks) => {
-        //         if(!Array.isArray(tasks)) tasks = [];
-        //         return this.setState({
-        //             tasks
-        //         })
-        //     })
-        //     .catch(err => console.log('ListContainer.componentDidMount: get tasks: ERROR: ', err));
+    componentDidUpdate(prevProps, prevState) {
+    //     fetch('/api/tasks', {
+    //         method: 'GET'
+    //     })
+    //         .then(res => res.json())
+    //         .then((tasks) => {
+    //             if(!Array.isArray(tasks)) tasks = [];
+    //             return this.setState({
+    //                 tasks
+    //             })
+    //         })
+    //         .catch(err => console.log('ListContainer.componentDidMount: get tasks: ERROR: ', err));
     }
-
-    
     
     render(){
-
-        const deleteTask = () => {
-            fetch('api/tasks/delete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'Application/JSON'
-                },
-                body: JSON.stringify({key: this.key})
-            })
-            console.log(this.key)
-        }
 
         if (!this.state) return (
             <div>
@@ -71,10 +99,17 @@ class ListContainer extends React.Component {
         
             
         for(let i = 0; i < tasks.length; i++){
+            let doneOrNot = false
+            if(tasks[i]['done'] === true){
+                doneOrNot = true
+            }
             parsedTasks.push(
-                <div key = {i}>{tasks[i]['content']}
-                    <button key = {'button'+i} onClick = {deleteTask}>
+                <div key = {i+1}>{tasks[i]['content']}
+                    <button tag = {'button'+(i+1)} onClick = {this.deleteTask} value = {tasks[i]['taskid']}> {'Delete'}
                     </button>
+                    <input type="checkBox" id={'checkBox'+(i+1)} value = {tasks[i]['taskid']} checked={tasks[i]['done']} onChange = {this.updateTask}>
+                        
+                    </input><label htmlFor ={'checkBox'+(i+1)}>Done</label>
                 </div>)
         }
             
