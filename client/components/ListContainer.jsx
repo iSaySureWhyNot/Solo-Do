@@ -54,13 +54,13 @@ class ListContainer extends React.Component {
            // .then((res) => this.setState({
                             //tasks
             //            }))
-            console.log('step 1') 
+            //console.log('step 1') 
              
-            //document.getElementById('textbox').value = '';
+            document.getElementById('textbox').value = '';
            
             
         }
-        console.log('step 2')
+        //console.log('step 2')
         
         
     }
