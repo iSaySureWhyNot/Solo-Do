@@ -87,7 +87,7 @@ class ListContainer extends React.Component {
         //     document.getElementById(e.target.id).checked = await false
         // }
         //document.getElementById(e.target.id).checked = await true
-        fetch('api/tasks/update', {
+        await fetch('api/tasks/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'Application/JSON'
@@ -169,7 +169,7 @@ class ListContainer extends React.Component {
                             </button>
                         </div>
                         <div className = 'doneBox' key= {'doneBox'+i}>
-                            <input type="checkBox" id={'checkBox'+(i+1)} value = {tasks[i]['taskid']} checked={tasks[i]['done']} onChange = {this.updateTask}>
+                            <input type="checkBox" className='checkBox' id={'checkBox'+(i+1)} value = {tasks[i]['taskid']} checked={tasks[i]['done']} onChange = {this.updateTask}>
                             
                             </input><label htmlFor ={'checkBox'+(i+1)}>Done</label>
                         </div>
