@@ -19,7 +19,8 @@ router.get('/tasks',
 
 router.post('/tasks',
     taskController.postTasks,
-    (req, res) => res.status(200).json(res.locals.tasks)
+    (req, res) => {console.log('hi there:' + res)
+        return res.status(200).json(res.locals.tasks)}
 );
 
 router.post('/tasks/delete',

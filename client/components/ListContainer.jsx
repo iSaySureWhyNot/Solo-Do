@@ -3,50 +3,65 @@ import React from 'react';
 
 import TextBox from './TextBox.jsx';
 
-const getInput = async (e) => {
-    if (e.key === 'Enter'){
-        const input = await document.getElementById('textbox').value;
-        console.log(input)
-        await fetch('api/tasks', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'Application/JSON'
-            },
-            body: JSON.stringify({text:input})
-        })
-       // .then((res) => this.setState({
-                        //tasks
-        //            }))
-        document.getElementById('textbox').value = '';
-    }
-    
-}
+
 
 class ListContainer extends React.Component {
     constructor(props) {
         super(props)
         
-
-        
-
+        this.state
+        this.getTasks = this.getTasks.bind(this);
+        this.getInput = this.getInput.bind(this);
+        this.deleteTask = this.deleteTask.bind(this);
+        this.updateTask = this.updateTask.bind(this)
         // this.deleteTask = this.deleteTask.bind(this)
     }
-    getInput = async (e) => {
+    
+    async getTasks() {
+        await fetch('/api/tasks', {
+            method: 'GET'
+        })
+            .then(res => res.json())
+            .then((tasks) => {
+                if(!Array.isArray(tasks)) tasks = [];
+                return this.setState({
+                    tasks
+                })
+            })
+            .catch(err => console.log('ListContainer.componentDidMount: get tasks: ERROR: ', err));
+    }
+
+      getInput(e){
         if (e.key === 'Enter'){
-            const input = await document.getElementById('textbox').value;
-            console.log(input)
-            await fetch('api/tasks', {
+            const input = document.getElementById('textbox').value;
+            //console.log(input)
+             fetch('api/tasks', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'Application/JSON'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({text:input})
+            }) 
+            .then((res) => { 
+                res.json()
+            this.getTasks()
             })
+            
+            .then((data)=>console.log('in the then statement',+ data))
+           
+            .catch(err => console.log('ListContainer.componentDidMount: get tasks: ERROR: ', err));
+           
            // .then((res) => this.setState({
                             //tasks
             //            }))
-            document.getElementById('textbox').value = '';
+            console.log('step 1') 
+             
+            //document.getElementById('textbox').value = '';
+           
+            
         }
+        console.log('step 2')
+        
         
     }
 
@@ -61,6 +76,7 @@ class ListContainer extends React.Component {
         })
         .catch(err => console.log('ListContainer.deleteTask: delete tasks: ERROR: ', err));
         //console.log(e.target.value)
+        this.getTasks()
     }
 
     async updateTask(e) {
@@ -82,20 +98,13 @@ class ListContainer extends React.Component {
         })
         .catch(err => console.log('ListContainer.deleteTask: delete tasks: ERROR: ', err));
         console.log(e.target)
+        this.getTasks()
     }
 
+
+
     componentDidMount(){
-        fetch('/api/tasks', {
-            method: 'GET'
-        })
-            .then(res => res.json())
-            .then((tasks) => {
-                if(!Array.isArray(tasks)) tasks = [];
-                return this.setState({
-                    tasks
-                })
-            })
-            .catch(err => console.log('ListContainer.componentDidMount: get tasks: ERROR: ', err));
+        this.getTasks()
     }
 
     componentDidUpdate(nextProps, nextState) {
@@ -135,7 +144,7 @@ class ListContainer extends React.Component {
                         type="text" 
                         id="textbox" 
                         name="fname" 
-                        onKeyDown = {getInput}
+                        onKeyDown = {this.getInput}
                         >
                     </input>
                 
@@ -174,7 +183,7 @@ class ListContainer extends React.Component {
         console.log('parsed Tasks', parsedTasks)
         return(
         <div>
-            <TextBox/>
+            <TextBox getInput={this.getInput}/>
             
                {parsedTasks} 
             

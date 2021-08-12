@@ -13,12 +13,14 @@ taskController.getTasks = (req, res, next) => {
         .catch(err => console.error('Error executing get query', err.stack))
 }
 
-taskController.postTasks = (req, res, next) => {
+taskController.postTasks = async (req, res, next) => {
     //console.log('req body', req.body)
     const q = "insert into tasks (content, done) values ('"+`${req.body.text}`+"', false)"
-    db
+    await db
         .query(q)
-        .then(next())
+        .then((result)=> {console.log('taskController hello here')
+        res.locals.tasks = result
+            next()})
         .catch(err => console.error('Error executing post query', err.stack))
 }
 
